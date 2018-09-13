@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script type="text/javascript" src="vue.js">
+
+    </script>
+  </head>
+  <body>
+    <div class="" id="app-1">
+      <template v-if='ok'>
+        <h1>Title</h1>
+        <p>Paragraph 1</p>
+        <p>Paragraph 2</p>
+      </template>
+      <div v-if="Math.random() > 0.5">
+        Now you see me
+      </div>
+      <div v-else>
+        Now you don't
+      </div>
+
+      <span v-if='type === "A"'>A</span>
+      <span v-else-if='type === "B"'>B</span>
+      <span v-else-if='type === "C"'>C</span>
+      <span v-else>Not A B C</span>
+
+      <div class="">
+        <template v-if="loginType === 'username'">
+          <label>Username</label>
+          <input placeholder="Enter your username">
+        </template>
+        <template v-else>
+          <label>Email</label>
+          <input placeholder="Enter your email address">
+        </template>
+        <button v-on:click="Change" type="button" name="button">Change {{loginType}}</button>
+      </div>
+
+      <div class="">
+        <span v-show='ok'> SHOW THIS IN VUE</span>
+      </div>
+    </div>
+    <div id="app-2">
+      <ul >
+        <li v-for="(item, index) in items":key="item.id">
+          {{ Parent }} - {{ index }} - {{ item.message }}
+        </li>
+        <li v-for="item of items":key='item.id'>
+          {{ item.message }}
+        </li>
+      </ul>
+      <ul id="v-for-object" class="demo">
+        <li v-for='(value, key, index) in object':key="value.id">
+          {{ index }}. {{ key }}. {{ value }}
+        </li>
+      </ul>
+
+      <li v-for="n in evenNumbers">{{ n }}</li>
+
+      <li v-for="n in even(numbers)">{{ n }}</li>
+
+      <span v-for="n in 10">{{ n }} </span>
+    </div>
+  </body>
+  <script type="text/javascript">
+    app1 = new Vue({
+      el: '#app-1',
+      data: {
+        ok: true,
+        type: 'A',
+        loginType: "username"
+      },
+      methods: {
+        Change: function() {
+          if (this.loginType === "username") {
+            this.loginType = "meil"
+          }
+          else {
+            this.loginType = "username"
+          }
+        }
+      }
+    });
+    app2 = new Vue({
+      el: "#app-2",
+      data: {
+        Parent: 'MIME',
+        items: [
+          {message: 'Foo'},
+          {message: 'Bar'}
+        ],
+        object: {
+          firstName: 'John',
+          lastName: 'Doe',
+          age: 30
+        },
+        numbers: [ 1, 2, 3, 4, 5 ]
+      },
+      computed: {
+        evenNumbers: function () {
+          return this.numbers.filter(function (number) {
+            return number % 2 === 0
+          })
+        }
+      },
+      methods: {
+          even: function (numbers) {
+            return numbers.filter(function (number) {
+              return number % 2 === 0
+            })
+          }
+        }
+    })
+  </script>
+</html>
