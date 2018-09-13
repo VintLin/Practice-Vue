@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script type="text/javascript" src="vue.js"></script>
+  </head>
+  <body>
+    <div id="app-1">
+      <ol>
+        <todo-item
+          v-for="item in groceryList"
+          v-bind:todo="item"
+          v-bind:key="item.id"></todo-item>
+      </ol>
+    </div>
+    <div id="app-2">
+      {{ fullName }}
+    </div>
+    <div id="app-3">
+      <div class="">
+        {{ NAME }}
+      </div>
+      <div class="">
+        {{ firstName }}
+        {{ lastName }}
+      </div>
+      <input v-model='NAME' type="text" name="" value="">
+    </div>
+    <div id="app-4" >
+      <div class="static" v-bind:class="{ active: isActive, 'text-danger': hasError }">
+      </div>
+      <div v-bind:class="[activeClass, errorClass]">
+      </div>
+    </div>
+    <my-component class="baz boo"></my-component>
+  </body>
+  <script type="text/javascript">
+    Vue.component('todo-item', {
+      props: ['todo'],
+      template: '<li>{{todo.text}}</li>'
+    });
+    var app1 = new Vue({
+      el: '#app-1',
+      data: {
+        groceryList: [
+          {id: 0, text: '蔬菜'},
+          {id: 1, text: '奶酪'},
+          {id: 2, text: '香肠'}
+        ]
+      }
+    });
+    var app2 = new Vue({
+      el: '#app-2',
+      data: {
+        fullName: 'THIS VOTER',
+        LastName: 'LAST NAME',
+        FirstName: 'FIRST NAME'
+      },
+      watch: {
+        FirstName: function(val) {
+          this.fullName = val + ' ' + this.LastName
+        },
+        LastName: function(val) {
+          this.fullName = this.FirstName + ' ' + val
+        }
+      }
+    });
+    var app3 = new Vue({
+      el: "#app-3",
+      data: {
+        firstName: 'First Name',
+        lastName: 'Last Name'
+      },
+      computed: {
+        NAME: {
+          get: function() {
+            return this.firstName + " " + this.lastName
+          },
+          set: function(newValue) {
+            var names = newValue.split(' ')
+            this.firstName = names[0]
+            this.lastName = names[names.length - 1]
+          }
+        }
+      }
+    });
+    var app4 = new Vue({
+      el: "#app-4",
+      data: {
+        isActive: true,
+        hasError: true,
+        activeClass: 'move',
+        errorClass: 'text-permir'
+      }
+    });
+    Vue.component('my-component', {
+      template: '<p class="foo bar">Hi</p>'
+    })
+  </script>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+    <style type="text/css">
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="map"></div>
+    <canvas id="canvas"></canvas>
+
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=你的百度密钥"></script>
+    <script type="text/javascript" src="mapv.js"></script>
+
+    <script type="text/javascript">
+        // 百度地图API功能
+        var map = new BMap.Map("map", {
+            enableMapClick: false
+        });    // 创建Map实例
+        map.centerAndZoom(new BMap.Point(116.395645038, 39.9299857781), 12);  // 初始化地图,设置中心点坐标和地图级别
+        map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
+        map.setMapStyle({
+            style: 'light'      //设置地图模板
+        });
+
+        var randomCount = 300;
+        var data=[];
+        var testdata=[这里是数据部分，数据格式为“经度，纬度，权值”];
+        var n=0;
+        while (randomCount--) {
+            data.push({
+                geometry: {
+                    type: 'Point',
+                    coordinates: [testdata[n], testdata[n+1]]       //经纬度
+                },
+                count: testdata[n+2],                   //每个点的数值
+                time: 100*Math.random()
+            });
+            n=n+3;
+        }
+/*      for(i in data){
+
+            for (x in data[i])
+                for (a in data[i][x])
+
+                     document.write(data[i][x][a]+"<br/ >")
+
+            }                   //查看data内的数据
+*/
+var dataSet = new mapv.DataSet(data);
+
+        var options = {
+            fillStyle: 'rgba(55, 50, 250, 0.8)',
+            shadowColor: 'rgba(255 ,255 ,0, 1)',
+            shadowBlur: 20,         //shadowBlur模糊等级
+            size: 15,               //设置数字大小
+            globalAlpha: 1,     //透明度
+
+            animation: {
+                type: 'time',
+                stepsRange: {
+                    start: 0,
+                    end: 100
+                },
+                trails: 10,         //每个点持续时间
+                duration: 20,           //完成动画所花费的时间
+            },
+
+            label: {
+                show: true,
+                fillStyle: 'white',
+            },
+            gradient: { 0.15: "rgb(11,171,205)", 0.65: "rgb(78,78,176)", 1.0: "rgb(237,40,145)"},
+            draw: 'grid'
+        }
+        //设置图的部分属性
+
+
+        var mapvLayer = new mapv.baiduMapLayer(map, dataSet, options);
+
+
+
+    </script>
+</body>
+</html>
