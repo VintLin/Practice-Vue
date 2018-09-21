@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script type='text/javascript' src='http://cdn.staticfile.org/jquery/2.1.1/jquery.min.js'></script>
+<script type="text/javascript" src="http://cdn.staticfile.org/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+  </head>
+  <body>
+    <div id="qrcode"></div>
+    <input type="file" accept="image/*" capture="camera">
+    <input type="file" accept="image/*" >
+  </body>
+  <script type="text/javascript">
+    function utf16to8(str) {
+      var out, i, len, c;
+      out = "";
+      len = str.length;
+      for(i = 0; i < len; i++) {
+      c = str.charCodeAt(i);
+      if ((c >= 0x0001) && (c <= 0x007F)) {
+          out += str.charAt(i);
+      } else if (c > 0x07FF) {
+          out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+          out += String.fromCharCode(0x80 | ((c >>  6) & 0x3F));
+          out += String.fromCharCode(0x80 | ((c >>  0) & 0x3F));
+      } else {
+          out += String.fromCharCode(0xC0 | ((c >>  6) & 0x1F));
+          out += String.fromCharCode(0x80 | ((c >>  0) & 0x3F));
+      }
+      }
+      return out;
+    };
+    jQuery('#qrcode').qrcode({
+      render: "canvas", // 渲染方式有table方式和canvas方式
+      width: 256,   //默认宽度
+      height: 256, //默认高度
+      text: utf16to8("中文内容"),//"中文内容" //二维码内容
+      typeNumber: -1,   //计算模式一般默认为-1
+      correctLevel: 2, //二维码纠错级别
+      background: "#ffffff",  //背景颜色
+      foreground: "#000000"  //二维码颜色
+    });
+  </script>
+</html>
