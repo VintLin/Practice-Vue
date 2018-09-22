@@ -17,23 +17,57 @@
           v-on:minus-text="postFontSize -= 0.1"
         ></blog-post>
       </div>
+
+      <custom-input
+        v-bind:value="searchText"
+        v-on:input="searchText = $event"
+      ></custom-input>
+      等价于
+      <custom-input v-model="searchText"></custom-input>
+
+      <div class="">
+        {{searchText}}
+      </div>
+
+      <alert-box>
+        Something bad happened.
+      </alert-box>
     </div>
     <script type="text/javascript">
-    Vue.component('blog-post', {
-      props: ['post'],
-      template: `
-        <div class="blog-post">
-          <h3>{{ post.title }}</h3>
-          <button v-on:click="$emit('add-text')">
-            +
-          </button>
-          <button v-on:click="$emit('minus-text')">
-            -
-          </button>
-          <div v-html="post.content"></div>
-        </div>
-      `
-      })
+
+
+      Vue.component('alert-box', {
+        template: `
+          <div class="demo-alert-box">
+            <strong>Error!</strong>
+            <slot></slot>
+          </div>
+        `
+      });
+      Vue.component('blog-post', {
+        props: ['post'],
+        template: `
+          <div class="blog-post">
+            <h3>{{ post.title }}</h3>
+            <button v-on:click="$emit('add-text')">
+              +
+            </button>
+            <button v-on:click="$emit('minus-text')">
+              -
+            </button>
+            <div v-html="post.content"></div>
+          </div>
+        `
+      });
+      Vue.component('custom-input', {
+        props: ['value'],
+        template: `
+          <input
+            v-bind:value="value"
+            v-on:input="$emit('input', $event.target.value)"
+          >
+        `
+      });
       var app = new Vue({
         el: '#blog-posts-events-demo',
         data: {
@@ -41,7 +75,8 @@
             { id: 1, title: 'My journey with Vue' },
             { id: 2, title: 'Blogging with Vue' },
             { id: 3, title: 'Why Vue is so fun' }],
-          postFontSize: 1
+          postFontSize: 1,
+          searchText: "",
         }
       })
     </script>
